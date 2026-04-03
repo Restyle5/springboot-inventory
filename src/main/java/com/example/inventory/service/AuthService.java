@@ -45,7 +45,7 @@ public class AuthService {
         credential.setValue(request.getPassword());
 
         UserRepresentation keycloakUser = new UserRepresentation();
-        keycloakUser.setUsername(request.getEmail());
+        keycloakUser.setUsername(request.getUsername());
         keycloakUser.setEnabled(true);
         keycloakUser.setEmail(request.getEmail());
         keycloakUser.setFirstName(request.getFirstName());
