@@ -3,7 +3,6 @@ package com.example.inventory.controller;
 import com.example.inventory.dto.request.warehouse.CreateWarehouseRequest;
 import com.example.inventory.dto.request.warehouse.UpdateWarehouseRequest;
 import com.example.inventory.dto.response.warehouse.CreateWarehouseResponse;
-import com.example.inventory.dto.response.warehouse.TenantWithWarehouseResponse;
 import com.example.inventory.dto.response.warehouse.UpdateWarehouseResponse;
 import com.example.inventory.dto.response.warehouse.WarehouseWithZoneResponse;
 import com.example.inventory.service.WarehouseService;
