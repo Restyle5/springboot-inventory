@@ -58,6 +58,6 @@ public class AuthHelper {
      */
     public void checkOwnershipByTenantId(String id, String ErrMsg){
         Tenant tenant  = getTenant(id);
-        checkOwnership(tenant.getManagedBy(), ErrMsg);
+        checkOwnership(tenant.getCreatedBy(), ErrMsg);
     }
 }

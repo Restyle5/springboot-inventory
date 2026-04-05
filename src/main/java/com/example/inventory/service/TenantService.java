@@ -36,16 +36,13 @@ public class TenantService {
 
             // tenant Information
             tenant.setName(request.getName());
-            tenant.setType(request.getTenantType());
             tenant.setCreatedBy(currentUser.getId());
-            tenant.setManagedBy(currentUser.getId()); // keep it simple, 1 : M. can be adjusted to M:M management.
 
             Tenant saved = tenantRepository.save(tenant);
 
             return new CreateTenant(
                     saved.getId(),
                     saved.getName(),
-                    saved.getType(),
                     saved.getCreatedAt()
             );
         }
@@ -58,7 +55,6 @@ public class TenantService {
         authHelper.checkOwnership(tenant.getCreatedBy());
 
         Optional.ofNullable(request.getName()).ifPresent(tenant::setName);
-        Optional.ofNullable(request.getTenantType()).ifPresent(tenant::setType);
 
         return tenantRepository.save(tenant);
     }
