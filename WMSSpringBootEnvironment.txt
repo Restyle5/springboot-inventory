@@ -1,0 +1,7 @@
+admin-token=
+admin-referesh=token
+base-url=
+keyclock-client-id=
+keyclock-client-secret=
+user-password=
+user-username

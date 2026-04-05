@@ -1,0 +1,772 @@
+{
+  "info": {
+    "_postman_id": "cef414dd-b30b-48f3-81fc-ddbac669af1a",
+    "name": "Inventory Management  (Sboot)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18154056",
+    "_collection_link": "https://go.postman.co/collection/18154056-cef414dd-b30b-48f3-81fc-ddbac669af1a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Second\",\n    \"lastName\": \"User\",\n    \"email\": \"SecondUser@example.com\",\n    \"username\" : \"seconduser\",\n    \"password\": \"12345678\",\n    \"tenantId\": \"69d2489a5c788eb55c28d3ee\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/auth/register",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tenant",
+      "item": [
+        {
+          "name": "Create Tenant",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"LIFE WELL CORPORATION\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/tenant/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "tenant",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Tenant",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"John. Co (updated2)\"\n}\n\n    "
+            },
+            "url": {
+              "raw": "{{base-url}}/tenant/69d250571a73e5f30c528802",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "tenant",
+                "69d250571a73e5f30c528802"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of Tenant's Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/tenant/users",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "tenant",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of Tenant's Warehouse",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/tenant/warehouses",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "tenant",
+                "warehouses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of Tenant's Products",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/tenant/products",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "tenant",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Warehouse",
+      "item": [
+        {
+          "name": "Create Warehouse",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Warehouse Shah Alam 2\",\n    \"address\": \"Pusat Komersial, Ground Floor Komersial Blok \\\"A, 2, Jalan Plumbum T 7/T, Seksyen 7, 40000 Shah Alam, Selangor, Malaysia\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/warehouse/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "warehouse",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Warehouse",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Warehouse Shah Alam 2\",\n    \"address\": \"Pusat Komersial, Ground Floor Komersial Blok \\\"A, 2, Jalan Plumbum T 7/T, Seksyen 7, 40000 Shah Alam, Selangor, Malaysia\"\n}\n\n    "
+            },
+            "url": {
+              "raw": "{{base-url}}/warehouse/69d26c61878a4e8842cfb2a8",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "warehouse",
+                "69d26c61878a4e8842cfb2a8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of Warehouse's Zone",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/warehouse/69d25c81af284fba88603340/zones",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "warehouse",
+                "69d25c81af284fba88603340",
+                "zones"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Zone",
+      "item": [
+        {
+          "name": "Create Zone",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"warehouseId\": \"69d25c81af284fba88603340\",\n    \"name\": \"Zone C\",\n    \"type\": \"COLD_STORAGE\",\n    \"description\": \"Dairy products\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/zone/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "zone",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Warehouse",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"warehouseId\": \"69d26c61878a4e8842cfb2a8\",\n    \"name\": \"Zone B\",\n    \"type\": \"COLD_STORAGE\",\n    \"description\": \"WD Warehouse\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/zone/69d272c78cfc3ff99a7ba0a2",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "zone",
+                "69d272c78cfc3ff99a7ba0a2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of Zone's Bin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/zone/69d271ff7adcbc09bcd03f9a/bins",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "zone",
+                "69d271ff7adcbc09bcd03f9a",
+                "bins"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bin",
+      "item": [
+        {
+          "name": "Create Bin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"C241\",\n    \"zoneId\": \"69d271ff7adcbc09bcd03f9a\",\n    \"capacity\": 200\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/bin/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "bin",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Bin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"B134\",\n    \"zoneId\": \"69d271ff7adcbc09bcd03f9a\",\n    \"capacity\": 100\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/bin/69d28678ff740084e1391efa",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "bin",
+                "69d28678ff740084e1391efa"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ICE CUBES\",\n  \"sku\": \"SKU-002\",\n  \"description\": \"This is a sample product for testing\",\n  \"category\": \"FOOD\",\n  \"requiredZoneType\": \"COLD_STORAGE\",\n  \"weight\": 1.5,\n  \"length\": 10.0,\n  \"width\": 5.0,\n  \"height\": 2.5,\n  \"dimensionUnit\": \"CM\",\n  \"weightUnit\": \"KG\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/product/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "product",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Warehouse",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"NUGGETS\",\n    \"sku\": \"SKU-001\",\n    \"description\": \"This is a sample product for testing\",\n    \"category\": \"ELECTRONICS\",\n    \"requiredZoneType\": \"COLD_STORAGE\",\n    \"weight\": 1.5,\n    \"length\": 10.0,\n    \"width\": 5.0,\n    \"height\": 2.5,\n    \"dimensionUnit\": \"CM\",\n    \"weightUnit\": \"KG\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/product/69d29b715d9656027e543804",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "product",
+                "69d29b715d9656027e543804"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth (via KeyClock)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();",
+              "",
+              "pm.environment.set(\"admin-token\", response.access_token);",
+              "pm.environment.set(\"admin-refresh-token\", response.refresh_token);",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "password",
+              "type": "text",
+              "uuid": "6e72761c-89bc-4e01-98b9-02f7d39308e6"
+            },
+            {
+              "key": "client_id",
+              "value": "inventory-api",
+              "description": "Clients -> `select your client` -> Client ID",
+              "type": "text",
+              "uuid": "fa122112-0b8f-44a5-adf8-6db74fe19c96"
+            },
+            {
+              "key": "client_secret",
+              "value": "cg3MOL3i7jmKyd3VJNY3YLljaalnhEMK",
+              "type": "text",
+              "uuid": "aa1ace4c-c077-49a4-b1a9-188ca51040af"
+            },
+            {
+              "key": "username",
+              "value": "{{user-username}}",
+              "type": "text",
+              "uuid": "4b7fbd78-e357-4eed-b941-8c8a46c2f502"
+            },
+            {
+              "key": "password",
+              "value": "{{user-password}}",
+              "type": "text",
+              "uuid": "465f87d8-d248-409e-8b7d-4bfdd63db2b1"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/realms/inventory-realm/protocol/openid-connect/token",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "realms",
+            "inventory-realm",
+            "protocol",
+            "openid-connect",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth (Refresh)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();",
+              "",
+              "pm.environment.set(\"admin-token\", response.access_token);",
+              "pm.environment.set(\"admin-refresh-token\", response.refresh_token); "
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "refresh_token",
+              "type": "text",
+              "uuid": "b15e48d4-1329-40ac-a31d-67b4d5d51ecd"
+            },
+            {
+              "key": "client_id",
+              "value": "{{keyclock-client-id}}",
+              "type": "text",
+              "uuid": "6989e305-70db-4cf6-b2a8-8ed3e212e09b"
+            },
+            {
+              "key": "client_secret",
+              "value": "{{keyclock-client-secret}}",
+              "type": "text",
+              "uuid": "af484718-414e-411f-9c0a-c7a5f6001e07"
+            },
+            {
+              "key": "refresh_token",
+              "value": "{{admin-refresh-token}}",
+              "type": "text",
+              "uuid": "d0668ba7-711a-4525-8d8c-fe2c8aef784d"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/realms/inventory-realm/protocol/openid-connect/token",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "realms",
+            "inventory-realm",
+            "protocol",
+            "openid-connect",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
