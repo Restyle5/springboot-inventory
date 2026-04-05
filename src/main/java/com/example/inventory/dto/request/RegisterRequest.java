@@ -21,6 +21,9 @@ public class RegisterRequest {
     @NotBlank(message = "Username is required")
     private String username;
 
+    @NotBlank(message = "Tenant is required.")
+    private String tenantId;
+
     @NotBlank
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;

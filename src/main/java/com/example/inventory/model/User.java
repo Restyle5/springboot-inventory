@@ -18,8 +18,16 @@ public class User {
     private String id;
     @Indexed(unique = true)
     private String keycloakId;
+
     private String email;
-    private String name;
+
+    private String firstName;
+    private String lastName;
+
+    private String username;
+
+    @Indexed
+    private String tenantId;
 
     @CreatedDate
     private Instant createdAt;

@@ -2,6 +2,7 @@ package com.example.inventory.service;
 
 import com.example.inventory.dto.request.RegisterRequest;
 import com.example.inventory.dto.response.RegisterResponse;
+import com.example.inventory.helper.AuthHelper;
 import com.example.inventory.model.User;
 import com.example.inventory.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
@@ -27,10 +28,16 @@ public class AuthService {
     private final Keycloak keycloak;
     private final UserRepository userRepository;
 
+    private final AuthHelper authHelper;
+
     @Value("${keycloak.admin.realm}")
     private String targetRealm;
 
     public RegisterResponse register(RegisterRequest request) {
+
+        // Check if tenant exist, keep it simple for now.
+        // Should have `Invite to tenant` architecture, but ill keep it simple.
+        authHelper.isTenantExist(request.getTenantId());
 
         // Check if email already exists
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -63,17 +70,21 @@ public class AuthService {
         String keycloakId   = locationPath.substring(locationPath.lastIndexOf('/') + 1);
 
         // Save in MongoDb
-        userRepository.save(
+        User saved = userRepository.save(
                 User.builder()
                         .keycloakId(keycloakId)
+                        .username(request.getUsername())
                         .email(request.getEmail())
-                        .name(request.getFirstName() + " " + request.getLastName())
+                        .tenantId(request.getTenantId())
+                        .firstName(request.getFirstName())
+                        .lastName(request.getLastName())
                         .build()
         );
 
         return RegisterResponse.builder()
-                .message("Registration successful. Please login.")
-                .email(request.getEmail())
+                .username(saved.getUsername())
+                .createdAt(saved.getCreatedAt())
+                .email(saved.getEmail())
                 .build();
     }
 

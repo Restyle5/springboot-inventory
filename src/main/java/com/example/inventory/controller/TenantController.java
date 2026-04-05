@@ -3,7 +3,7 @@ package com.example.inventory.controller;
 import com.example.inventory.dto.request.RegisterTenantRequest;
 import com.example.inventory.dto.request.UpdateTenantRequest;
 import com.example.inventory.dto.response.tenant.CreateTenant;
-import com.example.inventory.dto.response.tenant.ListTenant;
+import com.example.inventory.dto.response.tenant.TenantWithUsersResponse;
 import com.example.inventory.model.Tenant;
 import com.example.inventory.service.TenantService;
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class TenantController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ListTenant>> getList()
+    public ResponseEntity<TenantWithUsersResponse> getList()
     {
         return new ResponseEntity<>(tenantService.getList(), HttpStatus.OK);
     }
