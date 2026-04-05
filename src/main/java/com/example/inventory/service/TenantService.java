@@ -3,12 +3,15 @@ package com.example.inventory.service;
 import com.example.inventory.dto.request.RegisterTenantRequest;
 import com.example.inventory.dto.request.UpdateTenantRequest;
 import com.example.inventory.dto.response.tenant.CreateTenant;
+import com.example.inventory.dto.response.tenant.TenantWithProductResponse;
 import com.example.inventory.dto.response.tenant.TenantWithUsersResponse;
 import com.example.inventory.dto.response.warehouse.TenantWithWarehouseResponse;
 import com.example.inventory.helper.AuthHelper;
+import com.example.inventory.model.Product;
 import com.example.inventory.model.Tenant;
 import com.example.inventory.model.User;
 import com.example.inventory.model.Warehouse;
+import com.example.inventory.repository.ProductRepository;
 import com.example.inventory.repository.TenantRepository;
 import com.example.inventory.repository.UserRepository;
 import com.example.inventory.repository.WarehouseRepository;
@@ -30,6 +33,7 @@ public class TenantService {
     private final AuthHelper authHelper;
     private final UserRepository userRepository;
     private final WarehouseRepository warehouseRepository;
+    private final ProductRepository productRepository;
 
     /**
      * @param request Type RegisterTenantRequest
@@ -66,8 +70,8 @@ public class TenantService {
         return tenantRepository.save(tenant);
     }
 
-
-    public TenantWithUsersResponse getUserList() {
+    public TenantWithUsersResponse getUserList()
+    {
         User currentUser = authHelper.getCurrentUser();
 
         Tenant tenant = tenantRepository.findById(currentUser.getTenantId())
@@ -94,7 +98,8 @@ public class TenantService {
         return response;
     }
 
-    public TenantWithWarehouseResponse getWarehouseList() {
+    public TenantWithWarehouseResponse getWarehouseList()
+    {
         User currentUser = authHelper.getCurrentUser();
         Tenant tenant = tenantRepository.findById(currentUser.getTenantId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
@@ -114,6 +119,34 @@ public class TenantService {
                     summary.setCreatedBy(warehouse.getCreatedBy());
                     summary.setCreatedAt(warehouse.getCreatedAt());
                     summary.setUpdatedAt(warehouse.getUpdatedAt());
+                    return summary;
+                })
+                .toList());
+
+        return response;
+    }
+
+    public TenantWithProductResponse getProductList()
+    {
+        User currentUser = authHelper.getCurrentUser();
+        Tenant tenant = tenantRepository.findById(currentUser.getTenantId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
+
+        List<Product> products = productRepository.findByTenantId(currentUser.getTenantId());
+
+        TenantWithProductResponse response = new TenantWithProductResponse();
+        response.setId(tenant.getId());
+        response.setName(tenant.getName());
+        response.setCreatedAt(tenant.getCreatedAt());
+        response.setProducts(products.stream()
+                .map(product -> {
+                    TenantWithProductResponse.ProductSummary summary = new TenantWithProductResponse.ProductSummary();
+                    summary.setId(product.getId());
+                    summary.setName(product.getName());
+                    summary.setSku(product.getSku());
+                    summary.setDescription(product.getDescription());
+                    summary.setCategory(product.getCategory());
+                    summary.setRequiredZoneType(product.getRequiredZoneType());
                     return summary;
                 })
                 .toList());

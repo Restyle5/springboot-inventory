@@ -44,15 +44,17 @@ public class AuthHelper {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found.");
         }
     }
-    public void isTenantExist(String id) {
+    public void isTenantExist(String id)
+    {
          tenantRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
     }
-    public Tenant getTenant(String tenantId){
+    public Tenant getTenant(String tenantId)
+    {
         return tenantRepository.findById(tenantId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
     }
-
-    public void checkOwnershipByWarehouseId(String warehouseId){
+    public void checkOwnershipByWarehouseId(String warehouseId)
+    {
         Warehouse warehouse = warehouseRepository.findById(warehouseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Warehouse not found"));
         // check for User - tenant authority
