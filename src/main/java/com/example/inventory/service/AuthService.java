@@ -31,14 +31,14 @@ public class AuthService {
 
     public RegisterResponse register(RegisterRequest request) {
 
-        // ── 1. Check if email already exists in MongoDB ──────────────
+        // Check if email already exists
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Email is already registered"
             );
         }
 
-        // ── 2. Build Keycloak user representation ────────────────────
+        // Create Keycloak instance
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setTemporary(false);
         credential.setType(CredentialRepresentation.PASSWORD);
@@ -53,7 +53,6 @@ public class AuthService {
         keycloakUser.setEmailVerified(true);            // set false if you want email verification
         keycloakUser.setCredentials(List.of(credential));
 
-        // ── 3. Call Keycloak Admin API ───────────────────────────────
         RealmResource realm = keycloak.realm(targetRealm);
         Response response = realm.users().create(keycloakUser);
 
@@ -70,11 +69,11 @@ public class AuthService {
             );
         }
 
-        // ── 4. Extract Keycloak user ID from Location header ─────────
+        // Get Keycloak user ID from Location header
         String locationPath = response.getLocation().getPath();
         String keycloakId   = locationPath.substring(locationPath.lastIndexOf('/') + 1);
 
-        // ── 5. Save minimal profile to MongoDB ───────────────────────
+        // Save in MongoDb
         userRepository.save(
                 User.builder()
                         .keycloakId(keycloakId)

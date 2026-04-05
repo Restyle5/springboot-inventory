@@ -27,8 +27,7 @@ public class TenantController {
 
     @PostMapping("/create")
     public ResponseEntity<CreateTenant> create(
-            @Valid @RequestBody RegisterTenantRequest request,
-            @AuthenticationPrincipal Jwt jwt
+            @Valid @RequestBody RegisterTenantRequest request
             ){
         return new ResponseEntity<>(tenantService.create(request), HttpStatus.CREATED);
     }

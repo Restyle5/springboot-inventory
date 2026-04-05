@@ -1,6 +1,8 @@
 package com.example.inventory.helper;
 
+import com.example.inventory.model.Tenant;
 import com.example.inventory.model.User;
+import com.example.inventory.repository.TenantRepository;
 import com.example.inventory.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthHelper {
 
     private final UserRepository userRepository;
+    private final TenantRepository tenantRepository;
+
 
     /**
      * @return User instance.
@@ -27,13 +31,30 @@ public class AuthHelper {
     }
 
     /**
-     * @param createdBy Model: Tenant (createdBy), referring to Model: User (id).
+     * @param managedBy Model: Tenant (managedBy), referring to Model: User (id).
      */
-    public void checkOwnership(String createdBy){
+    public void checkOwnership(String managedBy)
+    {
+        checkOwnership(managedBy,"Tenant Not found.");
+    }
+    public void checkOwnership(String managedBy, String ErrMsg){
         User currentUser = getCurrentUser();
-        if(!createdBy.equals(currentUser.getId()))
+        if(!managedBy.equals(currentUser.getId()))
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant Not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ErrMsg);
         }
+    }
+    public Tenant getTenant(String id) {
+        return tenantRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
+    }
+    /**
+     * Cases When it's not necessary to have tenants called outside authService.
+     * @param id TenantId
+     * @param ErrMsg e.g. Inventory not found.
+     */
+    public void checkOwnershipByTenantId(String id, String ErrMsg){
+        Tenant tenant  = getTenant(id);
+        checkOwnership(tenant.getManagedBy(), ErrMsg);
     }
 }
