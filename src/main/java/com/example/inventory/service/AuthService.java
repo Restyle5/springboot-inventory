@@ -7,6 +7,7 @@ import com.example.inventory.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -31,29 +32,16 @@ public class AuthService {
 
     public RegisterResponse register(RegisterRequest request) {
 
-        // ── 1. Check if email already exists in MongoDB ──────────────
+        // Check if email already exists
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Email is already registered"
             );
         }
 
-        // ── 2. Build Keycloak user representation ────────────────────
-        CredentialRepresentation credential = new CredentialRepresentation();
-        credential.setTemporary(false);
-        credential.setType(CredentialRepresentation.PASSWORD);
-        credential.setValue(request.getPassword());
+        // Create Keycloak instance
+        UserRepresentation keycloakUser = getUserRepresentation(request);
 
-        UserRepresentation keycloakUser = new UserRepresentation();
-        keycloakUser.setUsername(request.getUsername());
-        keycloakUser.setEnabled(true);
-        keycloakUser.setEmail(request.getEmail());
-        keycloakUser.setFirstName(request.getFirstName());
-        keycloakUser.setLastName(request.getLastName());
-        keycloakUser.setEmailVerified(true);            // set false if you want email verification
-        keycloakUser.setCredentials(List.of(credential));
-
-        // ── 3. Call Keycloak Admin API ───────────────────────────────
         RealmResource realm = keycloak.realm(targetRealm);
         Response response = realm.users().create(keycloakUser);
 
@@ -70,11 +58,11 @@ public class AuthService {
             );
         }
 
-        // ── 4. Extract Keycloak user ID from Location header ─────────
+        // Get Keycloak user ID from Location header
         String locationPath = response.getLocation().getPath();
         String keycloakId   = locationPath.substring(locationPath.lastIndexOf('/') + 1);
 
-        // ── 5. Save minimal profile to MongoDB ───────────────────────
+        // Save in MongoDb
         userRepository.save(
                 User.builder()
                         .keycloakId(keycloakId)
@@ -87,5 +75,22 @@ public class AuthService {
                 .message("Registration successful. Please login.")
                 .email(request.getEmail())
                 .build();
+    }
+
+    private static @NonNull UserRepresentation getUserRepresentation(RegisterRequest request) {
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setTemporary(false);
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setValue(request.getPassword());
+
+        UserRepresentation keycloakUser = new UserRepresentation();
+        keycloakUser.setUsername(request.getUsername());
+        keycloakUser.setEnabled(true);
+        keycloakUser.setEmail(request.getEmail());
+        keycloakUser.setFirstName(request.getFirstName());
+        keycloakUser.setLastName(request.getLastName());
+        keycloakUser.setEmailVerified(true);            // set false if you want email verification
+        keycloakUser.setCredentials(List.of(credential));
+        return keycloakUser;
     }
 }

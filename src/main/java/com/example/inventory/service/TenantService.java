@@ -30,7 +30,7 @@ public class TenantService {
      * @return return a value of something
      */
     public CreateTenant create(RegisterTenantRequest request)
-        {
+    {
             User currentUser = authHelper.getCurrentUser();
             Tenant tenant = new Tenant();
 
@@ -38,6 +38,7 @@ public class TenantService {
             tenant.setName(request.getName());
             tenant.setType(request.getTenantType());
             tenant.setCreatedBy(currentUser.getId());
+            tenant.setManagedBy(currentUser.getId()); // keep it simple, 1 : M. can be adjusted to M:M management.
 
             Tenant saved = tenantRepository.save(tenant);
 
@@ -67,4 +68,5 @@ public class TenantService {
         User currentUser = authHelper.getCurrentUser();
         return tenantRepository.findByCreatedBy(currentUser.getId());
     }
+
 }
