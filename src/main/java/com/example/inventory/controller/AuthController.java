@@ -20,7 +20,6 @@ public class AuthController {
 
     /**
      * POST /api/auth/register
-     * Public endpoint — no JWT required.
      */
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(
