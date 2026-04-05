@@ -4,6 +4,7 @@ import com.example.inventory.dto.request.RegisterTenantRequest;
 import com.example.inventory.dto.request.UpdateTenantRequest;
 import com.example.inventory.dto.response.tenant.CreateTenant;
 import com.example.inventory.dto.response.tenant.TenantWithUsersResponse;
+import com.example.inventory.dto.response.warehouse.TenantWithWarehouseResponse;
 import com.example.inventory.model.Tenant;
 import com.example.inventory.service.TenantService;
 import jakarta.validation.Valid;
@@ -12,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tenant")
@@ -35,9 +34,15 @@ public class TenantController {
         return new ResponseEntity<>(tenantService.update(id, request), HttpStatus.OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<TenantWithUsersResponse> getList()
+    @GetMapping("/users")
+    public ResponseEntity<TenantWithUsersResponse> getUserList()
     {
-        return new ResponseEntity<>(tenantService.getList(), HttpStatus.OK);
+        return new ResponseEntity<>(tenantService.getUserList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/warehouses")
+    public ResponseEntity<TenantWithWarehouseResponse> getWarehouseList()
+    {
+        return new ResponseEntity<>(tenantService.getWarehouseList(), HttpStatus.OK);
     }
 }
