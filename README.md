@@ -1,24 +1,50 @@
-1. Create Spring boot project, 
-2. Add few dependecies: 
-- SpringWeb, 
-- Spring Securty, 
-- Lombok, 
-- Spring Boot DevTools, 
-- OAuth2 Resource Server 
-- Spring Data MongoDB
 
-3. Create basic Controller ( testing purpose )
-4. Create config/SecurityConfig ( to enable testing enpoints )
--- issue: no decoder -- 
--- solution: add external auth provider-
-5. use keyclock;
-docker run -p 8080:8080 \
+# Springboot Inventory 
+
+
+WMS using **Keycloack**(AuthServer in local container), **Java**(Intellij) and **MongoDB**. Focuses on creating/monitoring product and its movement across warehouses, zones, bin and more.
+
+
+### Status
+The project is still under development. It has a couples more module to be included.
+Those APIs are available  in Json file within this repository (***WMSSpringBoot.json***) and postman environment variables in  (***WMSSpringBootEnvironment.txt***)
+
+    1. Tenant - pushed
+    2. User - pushed
+    3. Warehouse - pushed
+    4. Zone- pushed
+    5. Bin -pushed
+    6. Product - pushed 
+    7. StockUnit - NOT YET
+    8. StockMovement - NOT YET
+
+
+
+
+
+
+## Deployment
+
+1. Clone the master branch 
+
+2. Install keycloack into local environment, it can be done via docker.
+
+```bash
+  docker run -d -p 8080:8080 \
+  --name keycloak \
   -e KEYCLOAK_ADMIN=admin \
   -e KEYCLOAK_ADMIN_PASSWORD=admin \
   quay.io/keycloak/keycloak:latest start-dev
-6. add users in keyclock;
-7. include it in application properties.
-8. setup .env and .gitignore
-9. link .env by clicking `run` -> `edit configuration` -> select file ( .env might be hidden, click the small eye icons to make it visible)
-10. setup git, push etc.
-	
+```
+
+3. Add A user in Keycloack via admin page.
+
+4. Setup MongoDB connection, one way is to create mongo connection instance is via MongoDb Atlas. 
+
+5. Fill in .environment
+
+6. Edit IntelliJ Configuration
+```
+Run -> Edit Configuration -> select .env file
+```
+
