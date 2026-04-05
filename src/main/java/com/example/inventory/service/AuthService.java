@@ -7,6 +7,7 @@ import com.example.inventory.repository.UserRepository;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -39,19 +40,7 @@ public class AuthService {
         }
 
         // Create Keycloak instance
-        CredentialRepresentation credential = new CredentialRepresentation();
-        credential.setTemporary(false);
-        credential.setType(CredentialRepresentation.PASSWORD);
-        credential.setValue(request.getPassword());
-
-        UserRepresentation keycloakUser = new UserRepresentation();
-        keycloakUser.setUsername(request.getUsername());
-        keycloakUser.setEnabled(true);
-        keycloakUser.setEmail(request.getEmail());
-        keycloakUser.setFirstName(request.getFirstName());
-        keycloakUser.setLastName(request.getLastName());
-        keycloakUser.setEmailVerified(true);            // set false if you want email verification
-        keycloakUser.setCredentials(List.of(credential));
+        UserRepresentation keycloakUser = getUserRepresentation(request);
 
         RealmResource realm = keycloak.realm(targetRealm);
         Response response = realm.users().create(keycloakUser);
@@ -86,5 +75,22 @@ public class AuthService {
                 .message("Registration successful. Please login.")
                 .email(request.getEmail())
                 .build();
+    }
+
+    private static @NonNull UserRepresentation getUserRepresentation(RegisterRequest request) {
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setTemporary(false);
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setValue(request.getPassword());
+
+        UserRepresentation keycloakUser = new UserRepresentation();
+        keycloakUser.setUsername(request.getUsername());
+        keycloakUser.setEnabled(true);
+        keycloakUser.setEmail(request.getEmail());
+        keycloakUser.setFirstName(request.getFirstName());
+        keycloakUser.setLastName(request.getLastName());
+        keycloakUser.setEmailVerified(true);            // set false if you want email verification
+        keycloakUser.setCredentials(List.of(credential));
+        return keycloakUser;
     }
 }
