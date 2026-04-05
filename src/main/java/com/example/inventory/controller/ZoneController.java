@@ -5,6 +5,7 @@ import com.example.inventory.dto.request.zone.CreateZoneRequest;
 import com.example.inventory.dto.request.zone.UpdateZoneRequest;
 import com.example.inventory.dto.response.zone.CreateZoneResponse;
 import com.example.inventory.dto.response.zone.UpdateZoneResponse;
+import com.example.inventory.dto.response.zone.ZoneWithBinResponse;
 import com.example.inventory.service.ZoneService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,16 @@ public class ZoneController {
     public ResponseEntity<UpdateZoneResponse> update(
             @PathVariable String id,
             @Valid @RequestBody UpdateZoneRequest request
-    ){
+    )
+    {
         return new ResponseEntity<>(zoneService.update(id, request), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/bins")
+    public ResponseEntity<ZoneWithBinResponse> getBinList(
+            @PathVariable String id
+    )
+    {
+        return new ResponseEntity<>(zoneService.getBinList(id), HttpStatus.OK);
     }
 }
