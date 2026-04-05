@@ -3,7 +3,9 @@ package com.example.inventory.controller;
 import com.example.inventory.dto.request.warehouse.CreateWarehouseRequest;
 import com.example.inventory.dto.request.warehouse.UpdateWarehouseRequest;
 import com.example.inventory.dto.response.warehouse.CreateWarehouseResponse;
+import com.example.inventory.dto.response.warehouse.TenantWithWarehouseResponse;
 import com.example.inventory.dto.response.warehouse.UpdateWarehouseResponse;
+import com.example.inventory.dto.response.warehouse.WarehouseWithZoneResponse;
 import com.example.inventory.service.WarehouseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +36,13 @@ public class WarehouseController {
             @Valid @RequestBody UpdateWarehouseRequest request
             ){
         return new ResponseEntity<>(warehouseService.update(id, request), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/zones")
+    public ResponseEntity<WarehouseWithZoneResponse> getZoneList(
+            @PathVariable String id
+    )
+    {
+        return new ResponseEntity<>(warehouseService.getZoneList(id), HttpStatus.OK);
     }
 }

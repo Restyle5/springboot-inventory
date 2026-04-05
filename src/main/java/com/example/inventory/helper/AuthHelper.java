@@ -2,8 +2,10 @@ package com.example.inventory.helper;
 
 import com.example.inventory.model.Tenant;
 import com.example.inventory.model.User;
+import com.example.inventory.model.Warehouse;
 import com.example.inventory.repository.TenantRepository;
 import com.example.inventory.repository.UserRepository;
+import com.example.inventory.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +21,7 @@ public class AuthHelper {
 
     private final UserRepository userRepository;
     private final TenantRepository tenantRepository;
-
+    private final WarehouseRepository warehouseRepository;
 
     /**
      * @return User instance.
@@ -31,7 +33,6 @@ public class AuthHelper {
         return userRepository.findByKeycloakId(keycloakId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
     }
-
     /**
      * @param tenantId Model: User has tenantId;
      */
@@ -47,8 +48,16 @@ public class AuthHelper {
          tenantRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
     }
-
     public Tenant getTenant(String tenantId){
         return tenantRepository.findById(tenantId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
     }
+
+    public void checkOwnershipByWarehouseId(String warehouseId){
+        Warehouse warehouse = warehouseRepository.findById(warehouseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Warehouse not found"));
+        // check for User - tenant authority
+        checkOwnership(warehouse.getTenantId());
+
+    }
+
 }
