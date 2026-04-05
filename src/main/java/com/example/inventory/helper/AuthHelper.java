@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class AuthHelper {
@@ -23,7 +25,8 @@ public class AuthHelper {
      * @return User instance.
      */
     public User getCurrentUser() {
-        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Jwt jwt = (Jwt) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
+        assert jwt != null;
         String keycloakId = jwt.getSubject();
 
         return userRepository.findByKeycloakId(keycloakId)
