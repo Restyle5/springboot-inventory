@@ -14,10 +14,4 @@ public class UserController {
     {
         return new ResponseEntity<>("user's enpoint", HttpStatus.OK);
     }
-
-    @GetMapping("/health")
-    public ResponseEntity<String> health()
-    {
-        return new ResponseEntity<>("health enpoint", HttpStatus.OK);
-    }
 }

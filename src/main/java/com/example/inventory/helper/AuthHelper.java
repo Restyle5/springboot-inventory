@@ -26,7 +26,6 @@ public class AuthHelper {
      */
     public User getCurrentUser() {
         Jwt jwt = (Jwt) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
-        assert jwt != null;
         String keycloakId = jwt.getSubject();
 
         return userRepository.findByKeycloakId(keycloakId)
@@ -34,30 +33,19 @@ public class AuthHelper {
     }
 
     /**
-     * @param managedBy Model: Tenant (managedBy), referring to Model: User (id).
+     * @param tenantId Model: User has tenantId;
      */
-    public void checkOwnership(String managedBy)
+    public void checkOwnership(String tenantId)
     {
-        checkOwnership(managedBy,"Tenant Not found.");
-    }
-    public void checkOwnership(String managedBy, String ErrMsg){
         User currentUser = getCurrentUser();
-        if(!managedBy.equals(currentUser.getId()))
+        if(!tenantId.equals(currentUser.getTenantId()))
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ErrMsg);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found.");
         }
     }
-    public Tenant getTenant(String id) {
-        return tenantRepository.findById(id)
+    public void isTenantExist(String id) {
+         tenantRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tenant not found"));
     }
-    /**
-     * Cases When it's not necessary to have tenants called outside authService.
-     * @param id TenantId
-     * @param ErrMsg e.g. Inventory not found.
-     */
-    public void checkOwnershipByTenantId(String id, String ErrMsg){
-        Tenant tenant  = getTenant(id);
-        checkOwnership(tenant.getManagedBy(), ErrMsg);
-    }
+
 }
