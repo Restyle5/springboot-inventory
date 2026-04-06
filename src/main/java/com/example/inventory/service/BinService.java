@@ -35,6 +35,8 @@ public class BinService {
 
         Bin bin = new Bin();
         bin.setZoneId(request.getZoneId());
+        bin.setZoneType(zone.getType());
+        bin.setTenantId(currentUser.getTenantId());
         bin.setCode(request.getCode());
         bin.setCapacity(request.getCapacity());
         bin.setCreatedBy(currentUser.getId());
@@ -51,14 +53,16 @@ public class BinService {
     {
         Bin bin = binRepository.findById(binId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bin not found."));
 
-        Zone zone = zoneRepository.findById(request.getZoneId())
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found."));
+        if (request.getZoneId() != null) {
+            Zone zone = zoneRepository.findById(request.getZoneId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Zone not found."));
 
-        // check for User-Tenant match Zone-warehouse identity
-        authHelper.checkOwnershipByWarehouseId(zone.getWarehouseId());
+            authHelper.checkOwnershipByWarehouseId(zone.getWarehouseId());
 
+            bin.setZoneId(zone.getId());
+            bin.setZoneType(zone.getType());
+        }
 
-        Optional.ofNullable(request.getZoneId()).ifPresent(bin::setZoneId);
         Optional.ofNullable(request.getCode()).ifPresent(bin::setCode);
         Optional.ofNullable(request.getCapacity()).ifPresent(bin::setCapacity);
 
@@ -67,6 +71,7 @@ public class BinService {
         return new UpdateBinResponse(
                 saved.getId(),
                 saved.getZoneId(),
+                saved.getZoneType(),
                 saved.getCode(),
                 saved.getCapacity(),
                 saved.getUpdatedAt()
