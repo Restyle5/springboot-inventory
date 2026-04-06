@@ -1,4 +1,8 @@
 package com.example.inventory.repository;
 
-public interface StockUnitRepository {
+import com.example.inventory.model.StockUnit;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface StockUnitRepository extends MongoRepository<StockUnit, String> {
+    long countByBinId(String binId);
 }

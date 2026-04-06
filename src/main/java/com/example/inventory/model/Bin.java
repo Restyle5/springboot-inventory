@@ -1,5 +1,6 @@
 package com.example.inventory.model;
 
+import com.example.inventory.type.ZoneType;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,7 +20,12 @@ public class Bin {
     private String id;
 
     @Indexed
+    private String tenantId; // denormalized
+
+    @Indexed
     private String zoneId;
+
+    private ZoneType zoneType;
 
     private String code;
 
