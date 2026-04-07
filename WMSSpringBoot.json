@@ -1,10 +1,9 @@
 {
   "info": {
-    "_postman_id": "cef414dd-b30b-48f3-81fc-ddbac669af1a",
+    "_postman_id": "c3e8222f-4f67-4ce9-a9fc-7433ecb87cbc",
     "name": "Inventory Management  (Sboot)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "18154056",
-    "_collection_link": "https://go.postman.co/collection/18154056-cef414dd-b30b-48f3-81fc-ddbac669af1a?source=collection_link"
+    "_exporter_id": "18154056"
   },
   "item": [
     {
@@ -471,7 +470,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"code\": \"C241\",\n    \"zoneId\": \"69d271ff7adcbc09bcd03f9a\",\n    \"capacity\": 200\n}",
+              "raw": "{\n    \"code\": \"C01\",\n    \"zoneId\": \"69d271ff7adcbc09bcd03f9a\",\n    \"capacity\": 200\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -514,16 +513,45 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"code\": \"B134\",\n    \"zoneId\": \"69d271ff7adcbc09bcd03f9a\",\n    \"capacity\": 100\n}"
+              "raw": "{\n    \"code\": \"C401\",\n    \"capacity\": 13,\n    \"zoneId\": \"69d272c78cfc3ff99a7ba0a2\"\n}"
             },
             "url": {
-              "raw": "{{base-url}}/bin/69d28678ff740084e1391efa",
+              "raw": "{{base-url}}/bin/69d34d407ec1b330876dc2c1",
               "host": [
                 "{{base-url}}"
               ],
               "path": [
                 "bin",
-                "69d28678ff740084e1391efa"
+                "69d34d407ec1b330876dc2c1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of Bin's Stockunits",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/bin/69d34d407ec1b330876dc2c1/stockunits",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "bin",
+                "69d34d407ec1b330876dc2c1",
+                "stockunits"
               ]
             }
           },
@@ -557,7 +585,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"ICE CUBES\",\n  \"sku\": \"SKU-002\",\n  \"description\": \"This is a sample product for testing\",\n  \"category\": \"FOOD\",\n  \"requiredZoneType\": \"COLD_STORAGE\",\n  \"weight\": 1.5,\n  \"length\": 10.0,\n  \"width\": 5.0,\n  \"height\": 2.5,\n  \"dimensionUnit\": \"CM\",\n  \"weightUnit\": \"KG\"\n}",
+              "raw": "{\n  \"name\": \"ICE CUBES\",\n  \"sku\": \"SKU-003\",\n  \"description\": \"This is a sample product for testing\",\n  \"category\": \"FOOD\",\n  \"requiredZoneType\": \"COLD_STORAGE\",\n  \"weight\": 1.5,\n  \"length\": 10.0,\n  \"width\": 5.0,\n  \"height\": 2.5,\n  \"dimensionUnit\": \"CM\",\n  \"weightUnit\": \"KG\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -578,7 +606,7 @@
           "response": []
         },
         {
-          "name": "Update Warehouse",
+          "name": "Update Product",
           "request": {
             "auth": {
               "type": "bearer",
@@ -600,16 +628,179 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"NUGGETS\",\n    \"sku\": \"SKU-001\",\n    \"description\": \"This is a sample product for testing\",\n    \"category\": \"ELECTRONICS\",\n    \"requiredZoneType\": \"COLD_STORAGE\",\n    \"weight\": 1.5,\n    \"length\": 10.0,\n    \"width\": 5.0,\n    \"height\": 2.5,\n    \"dimensionUnit\": \"CM\",\n    \"weightUnit\": \"KG\"\n}"
+              "raw": "{\n    \"name\": \"Fronzen Patty\",\n    \"sku\": \"SKU-003\",\n    \"description\": \"This is a sample product for testing\",\n    \"category\": \"FOOD\",\n    \"requiredZoneType\": \"COLD_STORAGE\",\n    \"weight\": 1.5,\n    \"length\": 10.0,\n    \"width\": 5.0,\n    \"height\": 2.5,\n    \"dimensionUnit\": \"CM\",\n    \"weightUnit\": \"KG\"\n}"
             },
             "url": {
-              "raw": "{{base-url}}/product/69d29b715d9656027e543804",
+              "raw": "{{base-url}}/product/69d344f8c3a3ece112aa5772",
               "host": [
                 "{{base-url}}"
               ],
               "path": [
                 "product",
-                "69d29b715d9656027e543804"
+                "69d344f8c3a3ece112aa5772"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stockunit",
+      "item": [
+        {
+          "name": "Create Stock unit.",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"69d29b715d9656027e543804\",\n  \"binId\": \"69d34d407ec1b330876dc2c1\",\n  \"serialNumber\": \"00008\",\n  \"batchNumber\": \"T160426B1\",\n  \"expiryDate\": \"2028-01-01T00:00:00Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/stockunit/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "stockunit",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Stock unit",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"binId\": \"69d34d407ec1b330876dc2c1\",\n    \"status\": \"RESERVED\",\n    \"expiryDate\": \"2028-02-01T00:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base-url}}/stockunit/69d359ea28d0fbaca00a25fb",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "stockunit",
+                "69d359ea28d0fbaca00a25fb"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get List of StockUnit's movements",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base-url}}/stockunit/69d359ea28d0fbaca00a25fb/stockmovements",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "stockunit",
+                "69d359ea28d0fbaca00a25fb",
+                "stockmovements"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Stockmovement",
+      "item": [
+        {
+          "name": "Create Stock movement",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"stockUnitId\": \"69d359ea28d0fbaca00a25fb\",\n    \"type\": \"TRANSFER\",\n    \"fromBinId\": \"69d34d407ec1b330876dc2c1\",\n    \"toBinId\": \"69d351cdca136cf59775b3c4\",\n    \"note\": \"NOTE FOR THE RECEIVER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base-url}}/stockmovement/create",
+              "host": [
+                "{{base-url}}"
+              ],
+              "path": [
+                "stockmovement",
+                "create"
               ]
             }
           },
@@ -650,14 +841,14 @@
             },
             {
               "key": "client_id",
-              "value": "inventory-api",
+              "value": "{{keyclock-client-id}}",
               "description": "Clients -> `select your client` -> Client ID",
               "type": "text",
               "uuid": "fa122112-0b8f-44a5-adf8-6db74fe19c96"
             },
             {
               "key": "client_secret",
-              "value": "cg3MOL3i7jmKyd3VJNY3YLljaalnhEMK",
+              "value": "{{keyclock-client-secret}}",
               "type": "text",
               "uuid": "aa1ace4c-c077-49a4-b1a9-188ca51040af"
             },
