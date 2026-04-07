@@ -9,6 +9,8 @@ WMS using **Keycloack**(AuthServer in local container), **Java**(Intellij) and *
 The project is closed.
 Those APIs are available  in Json file within this repository (***WMSSpringBoot.json***) and postman environment variables in  (***WMSSpringBootEnvironment.txt***)
 
+### Project Conclusion.
+Should have used SQL considering that WMS is highly relational dependend and let keyloack handle the entire user attributes.
 
 ## Deployment
 
