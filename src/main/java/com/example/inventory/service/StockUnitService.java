@@ -3,14 +3,13 @@ package com.example.inventory.service;
 import com.example.inventory.dto.request.stockunit.CreateStockUnitRequest;
 import com.example.inventory.dto.request.stockunit.UpdateStockUnitRequest;
 import com.example.inventory.dto.response.stockunit.CreateStockUnitResponse;
+import com.example.inventory.dto.response.stockunit.StockUnitWithStockMovementResponse;
 import com.example.inventory.dto.response.stockunit.UpdateStockUnitResponse;
 import com.example.inventory.helper.AuthHelper;
-import com.example.inventory.model.Bin;
-import com.example.inventory.model.Product;
-import com.example.inventory.model.StockUnit;
-import com.example.inventory.model.User;
+import com.example.inventory.model.*;
 import com.example.inventory.repository.BinRepository;
 import com.example.inventory.repository.ProductRepository;
+import com.example.inventory.repository.StockMovementRepository;
 import com.example.inventory.repository.StockUnitRepository;
 import com.example.inventory.type.StockUnitStatus;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +27,7 @@ public class StockUnitService {
     private final StockUnitRepository stockUnitRepository;
     private final ProductRepository productRepository;
     private final BinRepository binRepository;
+    private final StockMovementRepository stockMovementRepository;
     private final AuthHelper authHelper;
 
     public CreateStockUnitResponse create(CreateStockUnitRequest request)
@@ -85,7 +86,8 @@ public class StockUnitService {
         );
     }
 
-    public UpdateStockUnitResponse update(String stockUnitId, UpdateStockUnitRequest request) {
+    public UpdateStockUnitResponse update(String stockUnitId, UpdateStockUnitRequest request)
+    {
         User currentUser = authHelper.getCurrentUser();
 
 
@@ -148,6 +150,47 @@ public class StockUnitService {
                 saved.getExpiryDate(),
                 saved.getUpdatedAt()
         );
+    }
+
+    public StockUnitWithStockMovementResponse getStockMovementList(String Id)
+    {
+        User currentUser = authHelper.getCurrentUser();
+
+        StockUnit stockUnit = stockUnitRepository.findById(Id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stock unit not found"));
+
+        List<StockMovement> stockMovements = stockMovementRepository.findByStockUnitId(stockUnit.getId());
+
+        // verify ownership
+        Product product = productRepository.findById(stockUnit.getProductId())
+                .filter(p -> currentUser.getTenantId().equals(p.getTenantId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+
+        StockUnitWithStockMovementResponse stockUnitWithStockMovementResponse = new StockUnitWithStockMovementResponse();
+        stockUnitWithStockMovementResponse.setId(stockUnit.getId());
+        stockUnitWithStockMovementResponse.setProductId(stockUnit.getProductId());
+        stockUnitWithStockMovementResponse.setBinId(stockUnit.getBinId());
+        stockUnitWithStockMovementResponse.setSerialNumber(stockUnit.getSerialNumber());
+        stockUnitWithStockMovementResponse.setStatus(stockUnit.getStatus());
+        stockUnitWithStockMovementResponse.setUpdatedAt(stockUnit.getUpdatedAt());
+        stockUnitWithStockMovementResponse.setStockMovements(
+                stockMovements.stream().map(
+                        stockMovement -> {
+                            StockUnitWithStockMovementResponse.StockMovementSummary StockMovementSummary = new StockUnitWithStockMovementResponse.StockMovementSummary();
+                            StockMovementSummary.setId(stockMovement.getId());
+                            StockMovementSummary.setMovementType(stockMovement.getType());
+                            StockMovementSummary.setFromBinId(stockMovement.getFromBinId());
+                            StockMovementSummary.setToBinId(stockMovement.getToBinId());
+                            StockMovementSummary.setPerformedBy(stockMovement.getPerformedBy());
+                            StockMovementSummary.setNote(stockMovement.getNote());
+                            StockMovementSummary.setCreatedAt(stockMovement.getCreatedAt());
+
+                            return StockMovementSummary;
+                        }
+                ).toList()
+        );
+        return stockUnitWithStockMovementResponse;
     }
 
 }
