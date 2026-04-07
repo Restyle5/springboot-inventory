@@ -2,6 +2,7 @@ package com.example.inventory.controller;
 
 import com.example.inventory.dto.request.bin.CreateBinRequest;
 import com.example.inventory.dto.request.bin.UpdateBinRequest;
+import com.example.inventory.dto.response.bin.BinWithStockUnitResponse;
 import com.example.inventory.dto.response.bin.CreateBinResponse;
 import com.example.inventory.dto.response.bin.UpdateBinResponse;
 import com.example.inventory.service.BinService;
@@ -32,5 +33,13 @@ public class BinController {
             )
     {
         return new ResponseEntity<>(binService.update(id, request), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/stockunits")
+    public ResponseEntity<BinWithStockUnitResponse> getStockUnitList(
+            @PathVariable String id
+    )
+    {
+        return new ResponseEntity<>(binService.getStockUnitList(id), HttpStatus.OK);
     }
 }

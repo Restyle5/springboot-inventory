@@ -2,19 +2,20 @@ package com.example.inventory.service;
 
 import com.example.inventory.dto.request.bin.CreateBinRequest;
 import com.example.inventory.dto.request.bin.UpdateBinRequest;
+import com.example.inventory.dto.response.bin.BinWithStockUnitResponse;
 import com.example.inventory.dto.response.bin.CreateBinResponse;
 import com.example.inventory.dto.response.bin.UpdateBinResponse;
 import com.example.inventory.helper.AuthHelper;
-import com.example.inventory.model.Bin;
-import com.example.inventory.model.User;
-import com.example.inventory.model.Zone;
+import com.example.inventory.model.*;
 import com.example.inventory.repository.BinRepository;
+import com.example.inventory.repository.StockUnitRepository;
 import com.example.inventory.repository.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +24,7 @@ public class BinService {
     private final AuthHelper authHelper;
     private final ZoneRepository zoneRepository;
     private final BinRepository binRepository;
+    private final StockUnitRepository stockUnitRepository;
 
     public CreateBinResponse create(CreateBinRequest request)
     {
@@ -61,6 +63,9 @@ public class BinService {
 
             bin.setZoneId(zone.getId());
             bin.setZoneType(zone.getType());
+
+        }else {
+            authHelper.checkOwnership(bin.getTenantId());
         }
 
         Optional.ofNullable(request.getCode()).ifPresent(bin::setCode);
@@ -77,5 +82,37 @@ public class BinService {
                 saved.getUpdatedAt()
 
         );
+    }
+
+    public BinWithStockUnitResponse getStockUnitList(String Id)
+    {
+        Bin bin = binRepository.findById(Id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bin not found."));
+        authHelper.checkOwnership(bin.getTenantId());
+
+        List<StockUnit> stockUnitList = stockUnitRepository.findByBinId(bin.getId());
+        BinWithStockUnitResponse binWithStockUnitResponse = new BinWithStockUnitResponse();
+
+        binWithStockUnitResponse.setId(bin.getId());
+        binWithStockUnitResponse.setCode(bin.getCode());
+        binWithStockUnitResponse.setCapacity(bin.getCapacity());
+        binWithStockUnitResponse.setZoneId(bin.getZoneId());
+        binWithStockUnitResponse.setZoneType(bin.getZoneType());
+        binWithStockUnitResponse.setEmpty(bin.isEmpty());
+        binWithStockUnitResponse.setStockUnits(stockUnitList.stream().map(
+                stockunit -> {
+                    BinWithStockUnitResponse.StockUnitSummary stockUnitSummary = new BinWithStockUnitResponse.StockUnitSummary();
+                    stockUnitSummary.setId(stockunit.getId());
+                    stockUnitSummary.setProductId(stockunit.getProductId());
+                    stockUnitSummary.setStatus(stockunit.getStatus());
+                    stockUnitSummary.setBatchNumber(stockunit.getBatchNumber());
+                    stockUnitSummary.setSerialNumber(stockunit.getSerialNumber());
+                    stockUnitSummary.setExpiryDate(stockunit.getExpiryDate());
+                    stockUnitSummary.setUpdatedAt(stockunit.getUpdatedAt());
+                    return stockUnitSummary;
+                }
+        ).toList());
+
+        return binWithStockUnitResponse;
+
     }
 }

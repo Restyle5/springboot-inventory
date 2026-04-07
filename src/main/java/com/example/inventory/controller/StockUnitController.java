@@ -3,6 +3,7 @@ package com.example.inventory.controller;
 import com.example.inventory.dto.request.stockunit.CreateStockUnitRequest;
 import com.example.inventory.dto.request.stockunit.UpdateStockUnitRequest;
 import com.example.inventory.dto.response.stockunit.CreateStockUnitResponse;
+import com.example.inventory.dto.response.stockunit.StockUnitWithStockMovementResponse;
 import com.example.inventory.dto.response.stockunit.UpdateStockUnitResponse;
 import com.example.inventory.service.StockUnitService;
 import jakarta.validation.Valid;
@@ -33,5 +34,13 @@ public class StockUnitController {
             )
     {
         return new ResponseEntity<>(stockUnitService.update(id, request), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/stockmovements")
+    public ResponseEntity<StockUnitWithStockMovementResponse> getStockMovementList(
+            @PathVariable String id
+    )
+    {
+        return new ResponseEntity<>(stockUnitService.getStockMovementList(id), HttpStatus.OK);
     }
 }
