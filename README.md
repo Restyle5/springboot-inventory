@@ -6,21 +6,8 @@ WMS using **Keycloack**(AuthServer in local container), **Java**(Intellij) and *
 
 
 ### Status
-The project is still under development. It has a couples more module to be included.
+The project is closed.
 Those APIs are available  in Json file within this repository (***WMSSpringBoot.json***) and postman environment variables in  (***WMSSpringBootEnvironment.txt***)
-
-    1. Tenant - pushed
-    2. User - pushed
-    3. Warehouse - pushed
-    4. Zone- pushed
-    5. Bin -pushed
-    6. Product - pushed 
-    7. StockUnit - NOT YET
-    8. StockMovement - NOT YET
-
-
-
-
 
 
 ## Deployment
